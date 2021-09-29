@@ -9,13 +9,17 @@ class LineStorage:
     def insertInput(self, line):
         self.input = line
 
+    def resetForNewInput(self):
+        self.input = ""
+        self.csList = []
+
 
     def insertCSLine(self, line):
         self.csList.append(line)
 
 
-    def insertAlphaLine(self, line):
-        self.alphaList.append(line)
+    def updateAlphaList(self, newAlphaList):
+        self.alphaList = newAlphaList
 
 
     def getInputLine(self):
@@ -28,4 +32,3 @@ class LineStorage:
 
     def getAlphaList(self):
         return self.alphaList
-
