@@ -1,3 +1,4 @@
 class sortThem:
-    def alphabetize(list):
-        return sorted(list, key=str.casefold)
+    def alphabetize(newItems, sortedList):
+        sortedList.extend(newItems)
+        return sorted(sortedList, key=str.casefold)
