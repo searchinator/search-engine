@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from circularShift import circularShift
 from alphabetize import Alphabetize
 from flask_cors import CORS
+from line_storage import LineStorage
 
 app = Flask(__name__)
 # CORS(app)
@@ -11,6 +12,7 @@ cs_lines = []
 temp_list = []
 objt = circularShift()
 abt = Alphabetize()
+lineStorage = LineStorage()
 
 
 @app.route('/')
