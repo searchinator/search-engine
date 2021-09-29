@@ -1,14 +1,24 @@
-class Alphabetize:
-    def addLines(newItems, sortedList):
-        sortedList.extend(newItems)
-        for q in newItems:
-            j = q
-        return sorted(sortedList, key=str.casefold)
+import bisect
 
-    def __insert(newItems):
+class Alphabetize:
+    def __init__(self):
+        pass
+
+    def addLines(self, newItems, sortedList):
+        if len(newItems) >= len(sortedList)/2:
+            self.__merge(newItems, sortedList)
+        else:
+            self.__insert(newItems, sortedList)
 
         return
 
-    def __merge(newItems):
+    def __insert(self, newItems, sortedList):
+        for i in newItems:
+            # for each item, do a binary insert
+            bisect.insort(sortedList, i)
+        return
 
+    def __merge(self, newItems, sortedList):
+        sortedList.extend(newItems)
+        sortedList.sort(sortedList, key=str.casefold)
         return

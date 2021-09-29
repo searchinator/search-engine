@@ -10,6 +10,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}})
 cs_lines = []
 temp_list = []
 objt = circularShift()
+abt = Alphabetize()
 
 
 @app.route('/')
@@ -29,5 +30,5 @@ def circular_shifting():
 @app.route('/alphabetize', methods=['GET'])
 def sortLines():
 	# print(cs_lines)
-	cs_line = Alphabetize.addLines(temp_list, cs_lines)
+	cs_line = abt.addLines(temp_list, cs_lines)
 	return {'alphaLines': cs_line}
