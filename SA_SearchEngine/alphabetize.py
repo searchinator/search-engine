@@ -4,9 +4,8 @@ from line_storage import LineStorage
 
 
 class Alphabetize:
-    def __init__(self, lineStorage: LineStorage):
-        self.lineStorage = lineStorage
-
+    def __init__(self):
+        pass
 
     def sortNewList(self, csList):
         # csList.sort(key=str.casefold)
