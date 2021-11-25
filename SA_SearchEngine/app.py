@@ -53,3 +53,7 @@ def get_doc():
     result = repository.search_docs_with_key(search_query, page_size, page_num)
     print(result)
     return result
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
