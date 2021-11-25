@@ -1,6 +1,8 @@
 from bson import json_util
 from pymongo import MongoClient
 
+import query_makers
+
 
 class Repository:
 
@@ -9,6 +11,7 @@ class Repository:
         self.client = MongoClient("mongodb://localhost:27017")
         # sets 'db' to point to the 'searchinator' database.
         self.db = self.client.searchinator
+        self.query_maker = query_makers.DefaultQueryMaker()  # TODO use query_makers.LogicalQueryMaker()
 
     """
     the document is stored in the 'kwic' collection
@@ -40,8 +43,10 @@ class Repository:
 
     def search_docs_with_key(self, search_key, page_size=10, page_num=1):
         skips = page_size * (page_num - 1)
-        cursor = self.db.kwic.find(
-            {'lookupKey': search_key}).skip(skips).limit(page_size)
+
+        query = self.query_maker.make_query(search_key)
+
+        cursor = self.db.kwic.find(query).skip(skips).limit(page_size)
         return json_util.dumps(cursor)
         # return [x for x in cursor]
 
