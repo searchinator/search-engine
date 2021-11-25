@@ -2,33 +2,27 @@ class LineStorage:
 
     def __init__(self):
         self.input = ""
-        self.csList = []
-        self.alphaList = []
+        self.cs_list = []
+        self.alpha_list = []
 
-
-    def insertInput(self, line):
+    def insert_input(self, line):
         self.input = line
 
-    def resetForNewInput(self):
+    def reset_for_new_input(self):
         self.input = ""
-        self.csList = []
+        self.cs_list = []
 
+    def insert_cs_line(self, line):
+        self.cs_list.append(line)
 
-    def insertCSLine(self, line):
-        self.csList.append(line)
+    def update_alpha_list(self, new_alpha_list):
+        self.alpha_list = new_alpha_list
 
-
-    def updateAlphaList(self, newAlphaList):
-        self.alphaList = newAlphaList
-
-
-    def getInputLine(self):
+    def get_input_line(self):
         return self.input
 
+    def get_cs_list(self):
+        return self.cs_list
 
-    def getCSList(self):
-        return self.csList
-
-
-    def getAlphaList(self):
-        return self.alphaList
+    def get_alpha_list(self):
+        return self.alpha_list

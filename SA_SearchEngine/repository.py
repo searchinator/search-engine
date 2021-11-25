@@ -1,7 +1,5 @@
-from pymongo import MongoClient
 from bson import json_util
-from pprint import pprint
-from random import randint
+from pymongo import MongoClient
 
 
 class Repository:
@@ -21,16 +19,16 @@ class Repository:
             TODO: list of csLines sent here should not begin with noise words
     """
 
-    def insert_doc(self, csLines, url_id):
-        for csLine in csLines:
+    def insert_doc(self, cs_lines, url_id):
+        for cs_line in cs_lines:
             doc = {
                 'url_id': url_id,
-                'acsDescription': csLine,
-                'lookupKey': csLine.split(" ")[0]
+                'acsDescription': cs_line,
+                'lookupKey': cs_line.split(" ")[0]
             }
             result = self.db.kwic.insert_one(doc)
             print('Inserted CSLine {0} for URL ID {1} with ID {2}'.format(
-                csLine, url_id, result.inserted_id))
+                cs_line, url_id, result.inserted_id))
 
     def insert_url(self, url):
         doc = {
@@ -41,7 +39,7 @@ class Repository:
         return result.inserted_id
 
     def search_docs_with_key(self, search_key, page_size=10, page_num=1):
-        skips = page_size * (page_num-1)
+        skips = page_size * (page_num - 1)
         cursor = self.db.kwic.find(
             {'lookupKey': search_key}).skip(skips).limit(page_size)
         return json_util.dumps(cursor)

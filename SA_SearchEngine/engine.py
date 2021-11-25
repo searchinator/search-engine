@@ -1,18 +1,18 @@
-from circularShift import CircularShift
 from alphabetize import Alphabetize
+from circular_shift import CircularShift
 from repository import Repository
 
 
 class Engine:
 
     def __init__(self):
-        self.csShit = CircularShift()
-        self.alpha = Alphabetize()
-        self.repo = Repository()
+        self.circular_shifter = CircularShift()
+        self.alphabetizer = Alphabetize()
+        self.repository = Repository()
 
     def insert_new(self, url, description):
-        csLines = self.csShit.circular(description)
-        alphaLines = self.alpha.sortNewList(csLines)
-        url_id = self.repo.insert_url(url)
-        self.repo.insert_doc(csLines, url_id)
+        cs_lines = self.circular_shifter.shift(description)
+        alpha_lines = self.alphabetizer.sort_new_list(cs_lines)
+        url_id = self.repository.insert_url(url)
+        self.repository.insert_doc(cs_lines, url_id)
         # TODO: remove noise from the start of the sentences
