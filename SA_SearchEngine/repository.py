@@ -1,3 +1,5 @@
+from pymongo import MongoClient
+import certifi
 from bson import json_util
 from pymongo import MongoClient
 
@@ -8,7 +10,8 @@ class Repository:
 
     def __init__(self):
         # connects to the local instance of mongodb. Make sure you have one installed
-        self.client = MongoClient("mongodb://localhost:27017")
+        self.client = MongoClient(
+            "mongodb+srv://searchinator:rainbow12345@cluster0.ftay9.mongodb.net/searchinator?retryWrites=true&w=majority", tlsCAFile=certifi.where())
         # sets 'db' to point to the 'searchinator' database.
         self.db = self.client.searchinator
         self.query_maker = query_makers.DefaultQueryMaker()  # TODO use query_makers.LogicalQueryMaker()
