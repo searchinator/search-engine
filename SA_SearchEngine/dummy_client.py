@@ -12,7 +12,7 @@ requests.post(url=url + url_endpoint, json={
 
 # Requests to find the sample URL made before.
 r = requests.post(url=url + search_endpoint + '?query=search', json={
-    'page_size': 1,
+    'page_size': 10,
     'page_num': 1,
 })
 
