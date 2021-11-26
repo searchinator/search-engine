@@ -28,22 +28,13 @@ class LogicalQueryMaker(QueryMaker):
             word_before = split[i - 1]
             word = split[i]
             word_next = split[i + 1]
-            if word.lower() == 'and' and i - 1 in relation_for_index:
+            if (word.lower() == 'and' or word.loser() == 'or') and i - 1 in relation_for_index:
                 prev_relation = relation_for_index[i - 1]
-                relation = {'$and': [prev_relation, {'lookupKey': word_next}]}
+                relation = {'$' + word.lower(): [prev_relation, {'lookupKey': word_next}]}
                 result.remove(prev_relation)
                 result.append(relation)
-            elif word.lower() == 'and' and i - 1 not in relation_for_index:
-                relation = {'$and': [{'lookupKey': word_before}, {'lookupKey': word_next}]}
-                relation_for_index[i - 1] = relation
-                result.append(relation)
-            elif word.lower() == 'or' and i - 1 in relation_for_index:
-                prev_relation = relation_for_index[i - 1]
-                relation = {'$or': [prev_relation, {'lookupKey': word_next}]}
-                result.remove(prev_relation)
-                result.append(relation)
-            elif word.lower() == 'or' and i - 1 not in relation_for_index:
-                relation = {'$or': [{'lookupKey': word_before}, {'lookupKey': word_next}]}
+            elif (word.lower() == 'and' or word.loser() == 'or') and i - 1 not in relation_for_index:
+                relation = {'$' + word.lower(): [{'lookupKey': word_before}, {'lookupKey': word_next}]}
                 relation_for_index[i - 1] = relation
                 result.append(relation)
             elif word_before.lower() != 'not' and word_before.lower() != 'and' and word_before.lower() != 'or':
