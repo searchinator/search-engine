@@ -39,9 +39,6 @@ class LogicalQueryMaker(QueryMaker):
                 result.append(relation)
             elif word_before.lower() != 'not' and word_before.lower() != 'and' and word_before.lower() != 'or':
                 result.append({'lookupKey': word})
-        if len(split) > 2:
-            if len(split) - 3 not in relation_for_index:
-                result.append({'lookupKey': split[-1]})
-        else:
+        if (len(split) > 2 and len(split) - 3 not in relation_for_index) or len(split) <= 2:
             result.append({'lookupKey': split[-1]})
         return {'$or': result}
