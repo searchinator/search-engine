@@ -38,6 +38,7 @@ def sort_lines():
 
 @app.route('/url', methods=['POST'])
 def add_url_desc():
+    print(request.json)
     url = request.json['url']
     desc = request.json['desc']
     engine.insert_new(url, desc)
@@ -56,4 +57,4 @@ def get_doc():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='127.0.0.1')

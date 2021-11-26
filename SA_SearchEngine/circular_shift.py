@@ -13,9 +13,11 @@ class CircularShift:
     def shift(self, description):
         cs_list = []
         split = description.split(" ")
-        cs_list.append(self.list_to_str(split))
+        # cs_list.append(self.list_to_str(split))
+        cs_list.append(split)
         for i in range(1, len(split)):
             sublist = split[i:len(split)]
             sublist.extend(split[:i])
-            cs_list.append(self.list_to_str(sublist))
+            # cs_list.append(self.list_to_str(sublist))
+            cs_list.append(sublist)
         return cs_list

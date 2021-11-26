@@ -14,5 +14,4 @@ class Engine:
         cs_lines = self.circular_shifter.shift(description)
         alpha_lines = self.alphabetizer.sort_new_list(cs_lines)
         url_id = self.repository.insert_url(url)
-        self.repository.insert_doc(cs_lines, url_id)
-        # TODO: remove noise from the start of the sentences
+        self.repository.insert_doc(alpha_lines, url_id)
