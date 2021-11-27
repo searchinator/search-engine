@@ -14,7 +14,8 @@ class Repository:
             "mongodb+srv://searchinator:rainbow12345@cluster0.ftay9.mongodb.net/searchinator?retryWrites=true&w=majority", tlsCAFile=certifi.where())
         # sets 'db' to point to the 'searchinator' database.
         self.db = self.client.searchinator
-        self.query_maker = query_makers.DefaultQueryMaker()  # TODO use query_makers.LogicalQueryMaker()
+        # TODO use query_makers.LogicalQueryMaker()
+        self.query_maker = query_makers.DefaultQueryMaker()
 
     """
     the document is stored in the 'kwic' collection
@@ -49,12 +50,17 @@ class Repository:
 
         query = self.query_maker.make_query(search_key)
 
+        total_pages = self.db.kwic.count_documents(query) / 10
         cursor = self.db.kwic.find(query).skip(skips).limit(page_size)
-        return json_util.dumps(cursor)
-        # return [x for x in cursor]
-
-    def get_doc(self):
-        db = self.client.business
-        docs = self.db.kwic.find({})
-        for doc in docs:
-            print(doc)
+        response = []
+        for item in cursor:
+            query = {'_id': item['url_id']}
+            url = self.db.url.find_one(query)
+            res = {
+                'id': item['_id'],
+                'desc': item['acsDescription'],
+                'url': [url['url']],
+            }
+            response.append(res)
+        client_res = {'queryResult': response, 'total_pages': round(total_pages)}
+        return json_util.dumps(client_res)

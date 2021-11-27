@@ -50,9 +50,9 @@ def get_doc():
     search_query = request.args.get('query')
     page_size = request.json['page_size']
     page_num = request.json['page_num']
-    print(search_query)
+    print(
+        "Query: {0} - Page Size: {1} - Page Num: {2}".format(search_query, page_size, page_num))
     result = repository.search_docs_with_key(search_query, page_size, page_num)
-    print(result)
     return result
 
 
