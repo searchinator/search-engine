@@ -37,4 +37,4 @@ def read_file(filename):
             post_data(url, desc)
 
 
-read_file("data/bookmarks_2.html")
+read_file("data/bookmarks_1.html")

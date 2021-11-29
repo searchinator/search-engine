@@ -84,17 +84,17 @@ function Home() {
                     {searchResultTable}
                 </div>
             </div>
-            <nav aria-label="Page navigation example">
+            {searchResult.length != 0 && <nav>
                 <ul className="pagination justify-content-center">
                     <li className={`page-item ${currPage <= 1 ? "disabled" : ""}`}>
-                        <a className="page-link" onClick={(ev) => { handlePagination(-1) }} tabindex="-1">Previous</a>
+                        <a className="page-link" onClick={(ev) => { handlePagination(-1) }} tabIndex="-1">Previous</a>
                     </li>
                     {currPage} / {totalPages}
                     <li className={`page-item ${currPage >= totalPages ? "disabled" : ""}`}>
                         <a className="page-link" onClick={(ev) => { handlePagination(1) }}>Next</a>
                     </li>
                 </ul>
-            </nav>
+            </nav>}
         </div>
     );
 }

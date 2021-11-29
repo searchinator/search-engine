@@ -26,23 +26,25 @@ class Repository:
             TODO: list of csLines sent here should not begin with noise words
     """
 
-    def insert_doc(self, cs_lines, url_id):
+    def insert_doc(self, cs_lines, meta_id):
         for cs_line in cs_lines:
             doc = {
-                'url_id': url_id,
+                'meta_id': meta_id,
                 'acsDescription': cs_line,
                 'lookupKey': cs_line.split(" ")[0]
             }
             result = self.db.kwic.insert_one(doc)
             print('Inserted CSLine {0} for URL ID {1} with ID {2}'.format(
-                cs_line, url_id, result.inserted_id))
+                cs_line, meta_id, result.inserted_id))
 
-    def insert_url(self, url):
+    def insert_metadata(self, url, desc):
         doc = {
-            'url': url
+            'url': url,
+            'desc': desc
         }
-        result = self.db.url.insert_one(doc)
-        print('Inserted URL {0} with ID {1}'.format(url, result.inserted_id))
+        result = self.db.meta.insert_one(doc)
+        print('Inserted URL {0} and Desc {1} with ID {2}'.format(
+            url, desc, result.inserted_id))
         return result.inserted_id
 
     def search_docs_with_key(self, search_key, page_size=10, page_num=1):
@@ -54,13 +56,14 @@ class Repository:
         cursor = self.db.kwic.find(query).skip(skips).limit(page_size)
         response = []
         for item in cursor:
-            query = {'_id': item['url_id']}
-            url = self.db.url.find_one(query)
+            query = {'_id': item['meta_id']}
+            meta = self.db.meta.find_one(query)
             res = {
                 'id': item['_id'],
-                'desc': item['acsDescription'],
-                'url': [url['url']],
+                'desc': meta['desc'],
+                'url': meta['url'],
             }
             response.append(res)
-        client_res = {'queryResult': response, 'total_pages': round(total_pages)}
+        client_res = {'queryResult': response,
+                      'total_pages': round(total_pages)}
         return json_util.dumps(client_res)
