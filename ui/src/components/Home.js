@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-
+import icon from '../images/icon.jpeg';
 
 function Home() {
 
@@ -40,17 +40,6 @@ function Home() {
             return;
         }
         makeRequest(query, 1, 10);
-        // axios.post("http://127.0.0.1:5000/search", { page_size: 10, page_num: 1 }, { params: { query } })
-        //     .then(res => {
-        //         console.log(res.data);
-        //         setSearchResult(res.data);
-        //         setSearchResultTable(generateTable(res.data.queryResult));
-        //         setCurrPage(1);
-        //         setTotalPages(res.data.total_pages)
-        //     })
-        //     .catch(err => {
-        //         console.log(`handleSearch - Error: ${err}`);
-        //     })
     }
 
     const generateTable = (list) => {
@@ -58,8 +47,8 @@ function Home() {
             <div style={{ paddingTop: 10 }}>
                 <div className="card" style={{ width: 900 }} key={item.id}>
                     <div className="card-body">
-                        <p className="card-text">{item.desc}</p>
-                        <a href={item.url}>{item.url}</a>
+                        <h5 className="card-title">{item.desc.length > 90 ? (item.desc.substring(0, 90) + "...") : (item.desc)}</h5>
+                        <a href="#" className="card-link text-success"><h6>{item.url}</h6></a>
                     </div>
                 </div>
             </div>
@@ -67,35 +56,131 @@ function Home() {
         return resultList;
     };
 
-    return (
-        <div className="container-fluid">
-            <div className="row" style={{ paddingTop: 10 }}>
-                <div className="col-3"></div>
-                <div className="col-6">
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="inputLine" onChange={handleLineInput} />
+
+
+    const defaultIcon = (customWidth, customHeight, marginTop) => {
+        return (
+            <img src={icon} className="rounded img-fluid" alt="searchinator" style={{
+                width: customWidth,
+                height: customHeight,
+                marginTop: marginTop
+            }} />
+        );
+    }
+
+    const homePageLayout = () => {
+        return (
+            <div className="container-fluid">
+                <div className="row" style={{ paddingTop: 150 }}>
+                    <div className="col-4"></div>
+                    <div className="col-4">
+                        {defaultIcon("550px", "250px")}
                     </div>
-                    <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
+                </div>
+                <div className="row" style={{ paddingTop: 10 }}>
+                    <div className="col-3">
+                    </div>
+                    <div className="col-6">
+                        <div className="mb-3">
+                            <input type="text" className="form-control" id="inputLine" onChange={handleLineInput} />
+                        </div>
+                    </div>
+                </div>
+                <div className="row justify-content-md-center">
+                    <div className="col-4"></div>
+                    <div className="col-1"></div>
+                    <div className="col-2">
+                        <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
+                    </div>
+                    <div className="col-4"></div>
                 </div>
             </div>
-            <div className="row" style={{ paddingTop: 10 }}>
-                <div className="col-3"></div>
-                <div className="col-9">
-                    {searchResultTable}
+        )
+    }
+
+    const searchResultLayout = () => {
+        return (
+            <div className="container-fluid">
+                <div className="row bg-light" style={{ paddingTop: 10 }}>
+                    <div className="col-1">
+                        {defaultIcon("100px", "50px", "10px")}
+                    </div>
+                    <div className="col-6">
+                        <div className="mb-3">
+                            <input type="text" style={{ marginTop: 20 }} className="form-control" id="inputLine" onChange={handleLineInput} defaultValue={query} />
+                        </div>
+                    </div>
+                    <div className="col-3">
+                        <button type="button" style={{ marginTop: 20 }} className="btn btn-primary" onClick={handleSearch}>Search</button>
+                    </div>
                 </div>
+                <div className="row" style={{ paddingTop: 10 }}>
+                    <div className="col-1"></div>
+                    <div className="col-9">
+                        {searchResultTable}
+                    </div>
+                </div>
+                {searchResult.length != 0 && <nav style={{ paddingTop: 15 }}>
+                    <ul className="pagination justify-content-center">
+                        <li className={`page-item ${currPage <= 1 ? "disabled" : ""}`}>
+                            <a className="page-link" onClick={(ev) => { handlePagination(-1) }} tabIndex="-1">Previous</a>
+                        </li>
+                        <div style={{ paddingTop: 5, paddingLeft: 6, paddingRight: 6 }}>
+                            {currPage} / {totalPages}
+                        </div>
+                        <li className={`page-item ${currPage >= totalPages ? "disabled" : ""}`}>
+                            <a className="page-link" onClick={(ev) => { handlePagination(1) }}>Next</a>
+                        </li>
+                    </ul>
+                </nav>}
             </div>
-            {searchResult.length != 0 && <nav>
-                <ul className="pagination justify-content-center">
-                    <li className={`page-item ${currPage <= 1 ? "disabled" : ""}`}>
-                        <a className="page-link" onClick={(ev) => { handlePagination(-1) }} tabIndex="-1">Previous</a>
-                    </li>
-                    {currPage} / {totalPages}
-                    <li className={`page-item ${currPage >= totalPages ? "disabled" : ""}`}>
-                        <a className="page-link" onClick={(ev) => { handlePagination(1) }}>Next</a>
-                    </li>
-                </ul>
-            </nav>}
+        )
+    };
+
+    return (
+        <div>
+            {searchResult.length === 0 && homePageLayout()}
+            {searchResult.length !== 0 && searchResultLayout()}
         </div>
+        // <div className="container-fluid">
+        //     {searchResult.length === 0 && defaultIcon("300px")}
+        //     <div className="row" style={{ paddingTop: 10 }}>
+        //         <div className="col-1">
+        //             {searchResult.length !== 0 && searchResultIcon()}
+        //         </div>
+        //         <div className="col-6">
+        //             <div className="mb-3">
+        //                 <input type="text" className="form-control" id="inputLine" onChange={handleLineInput} />
+        //             </div>
+        //             {/* <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button> */}
+        //         </div>
+        //     </div>
+        //     <div className="row justify-content-md-center">
+        //         <div className="col-4"></div>
+        //         <div className="col-1"></div>
+        //         <div className="col-2">
+        //             <button type="button" className="btn btn-primary" onClick={handleSearch}>Search</button>
+        //         </div>
+        //         <div className="col-4"></div>
+        //     </div>
+        //     <div className="row" style={{ paddingTop: 10 }}>
+        //         <div className="col-3"></div>
+        //         <div className="col-9">
+        //             {searchResultTable}
+        //         </div>
+        //     </div>
+        //     {searchResult.length !== 0 && <nav style={{ paddingTop: 10 }}>
+        //         <ul className="pagination justify-content-center">
+        //             <li className={`page-item ${currPage <= 1 ? "disabled" : ""}`}>
+        //                 <a className="page-link" onClick={(ev) => { handlePagination(-1) }} tabIndex="-1">Previous</a>
+        //             </li>
+        //             {currPage} / {totalPages}
+        //             <li className={`page-item ${currPage >= totalPages ? "disabled" : ""}`}>
+        //                 <a className="page-link" onClick={(ev) => { handlePagination(1) }}>Next</a>
+        //             </li>
+        //         </ul>
+        //     </nav>}
+        // </div>
     );
 }
 
