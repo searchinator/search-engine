@@ -13,6 +13,5 @@ class Engine:
     def insert_new(self, url, description):
         cs_lines = self.circular_shifter.shift(description)
         alpha_lines = self.alphabetizer.sort_new_list(cs_lines)
-        url_id = self.repository.insert_url(url)
-        self.repository.insert_doc(cs_lines, url_id)
-        # TODO: remove noise from the start of the sentences
+        meta_id = self.repository.insert_metadata(url, description)
+        self.repository.insert_doc(alpha_lines, meta_id)

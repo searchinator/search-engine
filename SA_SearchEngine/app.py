@@ -38,6 +38,7 @@ def sort_lines():
 
 @app.route('/url', methods=['POST'])
 def add_url_desc():
+    print(request.json)
     url = request.json['url']
     desc = request.json['desc']
     engine.insert_new(url, desc)
@@ -49,11 +50,11 @@ def get_doc():
     search_query = request.args.get('query')
     page_size = request.json['page_size']
     page_num = request.json['page_num']
-    print(search_query)
+    print(
+        "Query: {0} - Page Size: {1} - Page Num: {2}".format(search_query, page_size, page_num))
     result = repository.search_docs_with_key(search_query, page_size, page_num)
-    print(result)
     return result
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='127.0.0.1')
