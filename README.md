@@ -1,3 +1,5 @@
+![](https://i.imgur.com/cLsn26E.jpeg)
+
 # Searchinator Search Engine
 
 ## Frontend Setup
